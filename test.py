@@ -42,12 +42,16 @@ class Tester():
 
         total_num = 0
         correct = 0
+        step = 0
         prevTime = time.time()
         for inputs, labels in self.loader.Generate():
             prediction = classification_agent.predict(inputs)
             correct += np.sum(prediction==labels)
             total_num += labels.size
             progressbar.update(1)
+            step += 1
+            if step > 10:
+                break
         progressbar.close()
 
         curTime = time.time()
@@ -56,6 +60,8 @@ class Tester():
         print("------------ test result ------------------")
         print("the number of total test data: ", total_num)
         print("accuracy: ", correct/total_num)
+        print("correct: ", correct)
+        print("total_num: ", total_num)
         print("time: ", sec)
 
 

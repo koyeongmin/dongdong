@@ -64,7 +64,7 @@ class Agent(nn.Module):
         loss.backward()
         self.classification_network_optim.step()
 
-        return loss
+        return loss, torch.argmax(prediction, dim=1).cpu().data.numpy().astype(np.int64)
 
     #####################################################
     ## predict lanes
@@ -73,7 +73,7 @@ class Agent(nn.Module):
         inputs = torch.from_numpy(inputs).float() 
         inputs = Variable(inputs).cuda()
 
-        return torch.argmax( self.classification_network(inputs), dim=1 )
+        return torch.argmax( self.classification_network(inputs), dim=1 ).cpu().data.numpy().astype(np.int64)
 
     #####################################################
     ## Training mode

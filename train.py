@@ -62,19 +62,28 @@ def Training():
     ## Loop for training
     ##############################
     print('Training loop')
-    step = 0
+    step = 1
     sampling_list = None
     for epoch in range(p.n_epoch):
         classification_agent.training_mode()
         for inputs, labels in loader.Generate(sampling_list):
-            loss = classification_agent.train(inputs, labels)
+            total_num = 0
+            correct = 0
+
+            loss, prediction = classification_agent.train(inputs, labels)
             loss = loss.cpu().data
+            correct += np.sum(prediction==labels)
+            total_num += labels.size
 
             print("epoch: ", epoch, "step: ", step, "loss: ", loss)
+            print("accuracy: ", correct/total_num)
+            print("correct: ", correct)
+            print("total_num: ", total_num)
 
             if step%100 == 0:
                 classification_agent.save_model(int(step/100), loss) 
                 tester.testing(classification_agent)
+                classification_agent.training_mode()
 
             step += 1          
 
