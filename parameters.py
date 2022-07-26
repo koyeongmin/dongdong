@@ -9,9 +9,9 @@ class Parameters():
     n_epoch = 1000
     l_rate = 0.0001
     weight_decay=1e-5
-    save_path = "savefile/"
-    model_path = ""
-    batch_size = 32
+    save_path = "/home/kym/project/nia/code/savefile/"
+    model_path = "/home/kym/project/nia/code/savefile/"
+    batch_size = 128
     x_size = 256
     y_size = 256
     resize_ratio = 8
@@ -47,7 +47,7 @@ class Parameters():
     shadow_ratio=0.6
     
     train_root_url="/media/kym/sub/nia/Dong/Training/"
-    test_root_url="/media/kym/sub/nia/Dong/Validation/"
+    test_root_url="/media/kym/sub/nia/Dong/Validation/[V원천]val_1/"
 
     # test parameter
     color = [(0,0,0), (255,0,0), (0,255,0),(0,0,255),(255,255,0),(255,0,255),(0,255,255),(255,255,255),(100,255,0),(100,0,255),(255,100,0),(0,100,255),(255,0,100),(0,255,100)]

@@ -51,7 +51,9 @@ class Agent(nn.Module):
     #####################################################
     def train(self, inputs, labels):
 
-        prediction = self.predict(inputs)
+        inputs = torch.from_numpy(inputs).float() 
+        inputs = Variable(inputs).cuda()
+        prediction = self.classification_network(inputs)
         labels_tensor = torch.from_numpy(labels).long().cuda()
 
         c = nn.CrossEntropyLoss() 
@@ -71,7 +73,7 @@ class Agent(nn.Module):
         inputs = torch.from_numpy(inputs).float() 
         inputs = Variable(inputs).cuda()
 
-        return self.classification_network(inputs)
+        return torch.argmax( self.classification_network(inputs), dim=1 )
 
     #####################################################
     ## Training mode

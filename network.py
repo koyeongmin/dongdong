@@ -5,7 +5,6 @@
 #########################################################################
 import torch
 import torch.nn as nn
-from util_hourglass import *
 from parameters import Parameters
 
 p = Parameters()
@@ -39,6 +38,7 @@ class classification_network(nn.Module):
         self.conv7 = nn.Conv2d(1024, 1024, 4, padding=0, stride=1, bias=True) # 1*1*32
 
     def forward(self, inputs):
+        batch_size = inputs.shape[0]
         output = self.conv1(inputs)
         output = self.conv2(output)
         output = self.conv3(output)
@@ -47,4 +47,4 @@ class classification_network(nn.Module):
         output = self.conv6(output)
         output = self.conv7(output)
 
-        return output.view(p.batch_size, -1)
+        return output.view(batch_size, -1)

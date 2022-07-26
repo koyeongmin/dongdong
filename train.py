@@ -9,8 +9,9 @@ import torch
 import numpy as np
 from data_loader import Generator
 from parameters import Parameters
+from test import Tester
+from agent import Agent
 import copy
-import agent
 
 p = Parameters()
 
@@ -39,10 +40,10 @@ def Training():
     print('Get agent')
 
     if p.model_path == "":
-        classification_agent = agent.Agent()
+        classification_agent = Agent()
     else:
-        classification_agent = agent.Agent()
-        classification_agent.load_weights(0, "tensor(1.3984)")
+        classification_agent = Agent()
+        classification_agent.load_weights(0, "tensor(1.9614)")
 
     ##############################
     ## Check GPU
@@ -50,6 +51,12 @@ def Training():
     print('Setup GPU mode')
     if torch.cuda.is_available():
         classification_agent.cuda()
+
+    #########################################################################
+    ## Get tester
+    #########################################################################
+    print("Get tester")
+    tester = Tester()
 
     ##############################
     ## Loop for training
@@ -61,12 +68,15 @@ def Training():
         classification_agent.training_mode()
         for inputs, labels in loader.Generate(sampling_list):
             loss = classification_agent.train(inputs, labels)
+            loss = loss.cpu().data
 
-            print(loss)
-            step += 1
+            print("epoch: ", epoch, "step: ", step, "loss: ", loss)
 
-        if step%100 == 0:
-            classification_agent.save_model(int(step/100), loss)           
+            if step%100 == 0:
+                classification_agent.save_model(int(step/100), loss) 
+                tester.testing(classification_agent)
+
+            step += 1          
 
 
 def testing(lane_agent, test_image, step, loss):
